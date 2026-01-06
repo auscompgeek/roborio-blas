@@ -14,6 +14,8 @@ AR=$(CROSS_COMPILE)ar
 RANLIB=$(CROSS_COMPILE)ranlib
 STRIP=$(CROSS_COMPILE)strip
 
+PYTHON=python3.14
+
 MAKE_OPTIONS=DESTDIR=../prefix
 
 all: package
@@ -28,7 +30,7 @@ ${SRCDIR}: ${LIBGZIP}
 .PHONY: compile
 compile: ${SRCDIR}
 	rm -rf prefix
-	cd ${SRCDIR} && AS=$(AS) CC=$(CC) CXX=$(CXX) FC=$(FC) AR=$(AR) RANLIB=$(RANLIB) ./configure --prefix=/usr/local cortexa9
+	cd ${SRCDIR} && AS=$(AS) CC=$(CC) CXX=$(CXX) FC=$(FC) AR=$(AR) RANLIB=$(RANLIB) PYTHON=$(PYTHON) ./configure --prefix=/usr/local cortexa9
 	cd ${SRCDIR} && make $(MAKE_OPTIONS)
 	cd ${SRCDIR} && make $(MAKE_OPTIONS) install
 
