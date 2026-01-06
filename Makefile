@@ -5,9 +5,10 @@ BINRELEASE = https://github.com/OpenMathLib/OpenBLAS/releases/download/v$(VERSIO
 LIBGZIP = $(abspath $(notdir ${BINRELEASE}))
 SRCDIR = OpenBLAS-$(VERSION)
 
-FC=arm-frc2024-linux-gnueabi-gfortran
-CC=arm-frc2024-linux-gnueabi-gcc
-STRIP=arm-frc2024-linux-gnueabi-strip
+CROSS_COMPILE=arm-frc2024-linux-gnueabi-
+FC=$(CROSS_COMPILE)gfortran
+CC=$(CROSS_COMPILE)gcc
+STRIP=$(CROSS_COMPILE)strip
 
 MAKE_OPTIONS=FC=$(FC) CC=$(CC) HOSTCC=gcc \
 		TARGET=CORTEXA9 ARM_SOFTFP_ABI=1 \
