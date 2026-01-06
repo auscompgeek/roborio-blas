@@ -1,7 +1,7 @@
 /data
 /devdata
 /prefix
-/OpenBLAS*
+/blis*
 
 *.gz
 *.whl

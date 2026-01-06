@@ -1,6 +1,6 @@
-name = "robotpy-openblas"
-version = "0.3.28+r1"
-url = "https://www.openblas.net"
+name = "robotpy-blis"
+version = "2.0"
+url = "https://github.com/flame/blis"
 license = "BSD"
 install_requires = ["robotpy-libgfortran5"]
 

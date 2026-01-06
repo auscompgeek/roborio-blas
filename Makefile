@@ -1,20 +1,17 @@
 
-VERSION = 0.3.28
+VERSION = 2.0
 
-BINRELEASE = https://github.com/OpenMathLib/OpenBLAS/releases/download/v$(VERSION)/OpenBLAS-$(VERSION).tar.gz
+BINRELEASE = https://github.com/flame/blis/archive/refs/tags/$(VERSION).tar.gz
 LIBGZIP = $(abspath $(notdir ${BINRELEASE}))
-SRCDIR = OpenBLAS-$(VERSION)
+SRCDIR = blis-$(VERSION)
 
 CROSS_COMPILE=arm-frc2024-linux-gnueabi-
-FC=$(CROSS_COMPILE)gfortran
+AS=$(CROSS_COMPILE)as
 CC=$(CROSS_COMPILE)gcc
+CXX=$(CROSS_COMPILE)g++
 STRIP=$(CROSS_COMPILE)strip
 
-MAKE_OPTIONS=FC=$(FC) CC=$(CC) HOSTCC=gcc \
-		TARGET=CORTEXA9 ARM_SOFTFP_ABI=1 \
-		NUM_CORES=2 USE_OPENMP=0 MAX_STACK_ALLOC=256 \
-		PREFIX=/usr/local DESTDIR=../prefix \
-		QUIET_MAKE=1
+MAKE_OPTIONS=DESTDIR=../prefix
 
 all: package
 
@@ -23,11 +20,12 @@ ${LIBGZIP}:
 
 ${SRCDIR}: ${LIBGZIP}
 	tar -xf ${LIBGZIP}
-	cd $(SRCDIR) && patch -p1 < ../arm-buffersize.patch
+	cd $(SRCDIR) && patch -p1 < ../machine-flags.patch
 
 .PHONY: compile
 compile: ${SRCDIR}
 	rm -rf prefix
+	cd ${SRCDIR} && AS=$(AS) CC=$(CC) CXX=$(CXX) ./configure --prefix=/usr/local cortexa9
 	cd ${SRCDIR} && make $(MAKE_OPTIONS)
 	cd ${SRCDIR} && make $(MAKE_OPTIONS) install
 
@@ -37,14 +35,13 @@ package: compile
 
 	# create release package
 	mkdir -p data/usr/local/lib
-	cp -L prefix/usr/local/lib/libopenblas.so.0 data/usr/local/lib/libopenblas.so.0
+	cp -L prefix/usr/local/lib/libblis.so.4 data/usr/local/lib/
 	roborio-gen-whl data.py data -o dist --strip $(STRIP)
 	
 	# create development package
-	mkdir -p devdata/usr/local/lib 
+	mkdir -p devdata/usr/local/lib devdata/usr/local/share
 	cp -r prefix/usr/local/include devdata/usr/local/include
-	cp -r prefix/usr/local/lib/pkgconfig devdata/usr/local/lib/pkgconfig
-	cp -r prefix/usr/local/lib/cmake devdata/usr/local/lib/cmake
-	cp -L prefix/usr/local/lib/libopenblas.so devdata/usr/local/lib/libopenblas.so
-	cp -L prefix/usr/local/lib/libopenblas.a devdata/usr/local/lib/libopenblas.a
+	cp -r prefix/usr/local/share/pkgconfig devdata/usr/local/share/pkgconfig
+	cp -L prefix/usr/local/lib/libblis.so devdata/usr/local/lib/
+	cp -L prefix/usr/local/lib/libblis.a devdata/usr/local/lib/
 	roborio-gen-whl --dev data.py devdata -o dist

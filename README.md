@@ -1,4 +1,4 @@
-OpenBLAS wheel builder
-======================
+BLIS wheel builder
+==================
 
-Packages OpenBLAS in a wheel for installation on the RoboRIO
+Packages BLIS in a wheel for installation on the RoboRIO

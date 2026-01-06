@@ -1,0 +1,12 @@
+diff --git a/config/cortexa9/make_defs.mk b/config/cortexa9/make_defs.mk
+--- a/config/cortexa9/make_defs.mk
++++ b/config/cortexa9/make_defs.mk
+@@ -46,7 +46,7 @@
+ # general-purpose/configuration-agnostic flags in common.mk. You
+ # may specify additional flags here as needed.
+ CPPROCFLAGS    :=
+-CMISCFLAGS     := -mfloat-abi=hard -mfpu=neon
++CMISCFLAGS     := 
+ CPICFLAGS      := -fPIC
+ CWARNFLAGS     :=
+ 
