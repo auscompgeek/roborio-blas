@@ -7,8 +7,11 @@ SRCDIR = blis-$(VERSION)
 
 CROSS_COMPILE=arm-frc2024-linux-gnueabi-
 AS=$(CROSS_COMPILE)as
+FC=$(CROSS_COMPILE)gfortran
 CC=$(CROSS_COMPILE)gcc
 CXX=$(CROSS_COMPILE)g++
+AR=$(CROSS_COMPILE)ar
+RANLIB=$(CROSS_COMPILE)ranlib
 STRIP=$(CROSS_COMPILE)strip
 
 MAKE_OPTIONS=DESTDIR=../prefix
@@ -25,7 +28,7 @@ ${SRCDIR}: ${LIBGZIP}
 .PHONY: compile
 compile: ${SRCDIR}
 	rm -rf prefix
-	cd ${SRCDIR} && AS=$(AS) CC=$(CC) CXX=$(CXX) ./configure --prefix=/usr/local cortexa9
+	cd ${SRCDIR} && AS=$(AS) CC=$(CC) CXX=$(CXX) FC=$(FC) AR=$(AR) RANLIB=$(RANLIB) ./configure --prefix=/usr/local cortexa9
 	cd ${SRCDIR} && make $(MAKE_OPTIONS)
 	cd ${SRCDIR} && make $(MAKE_OPTIONS) install
 
