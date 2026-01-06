@@ -5,7 +5,7 @@ BINRELEASE = https://github.com/flame/blis/archive/refs/tags/$(VERSION).tar.gz
 LIBGZIP = $(abspath $(notdir ${BINRELEASE}))
 SRCDIR = blis-$(VERSION)
 
-CROSS_COMPILE=arm-frc2024-linux-gnueabi-
+CROSS_COMPILE=arm-frc2025-linux-gnueabi-
 AS=$(CROSS_COMPILE)as
 FC=$(CROSS_COMPILE)gfortran
 CC=$(CROSS_COMPILE)gcc
